@@ -22,3 +22,34 @@ class GerenciadorDeBanco:
                             quantidade INTEGER,
                             preco DECIMAL)''')
         self.conn.commit()
+
+class GerenciadorDeClientes(GerenciadorDeBanco):
+    def inserir_cliente(self, nome, email):
+        cursor = self.conn.cursor()
+        cursor.execute('INSERT INTO clientes (nome, email) VALUES (?, ?)', (nome, email))
+        self.conn.commit()
+
+    def listar_clientes(self):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM clientes')
+        return cursor.fetchall()
+
+    def alterar_cliente(self, id, nome, email):
+        cursor = self.conn.cursor()
+        cursor.execute('UPDATE clientes SET nome = ?, email = ? WHERE id = ?', (nome, email, id))
+        self.conn.commit()
+
+    def pesquisar_cliente_por_nome(self, nome):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM clientes WHERE nome LIKE ?', ('%'+nome+'%',))
+        return cursor.fetchall()
+
+    def exibir_cliente(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM clientes WHERE id = ?', (id,))
+        return cursor.fetchone()
+
+    def remover_cliente(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute('DELETE FROM clientes WHERE id = ?', (id,))
+        self.conn.commit()
