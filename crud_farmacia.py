@@ -53,3 +53,43 @@ class GerenciadorDeClientes(GerenciadorDeBanco):
         cursor = self.conn.cursor()
         cursor.execute('DELETE FROM clientes WHERE id = ?', (id,))
         self.conn.commit()
+
+def main():
+    gerenciador = GerenciadorDeClientes()
+
+    # Inserir alguns clientes
+    print("Inserindo clientes...")
+    gerenciador.inserir_cliente('Alice Santos', 'alice@example.com')
+    gerenciador.inserir_cliente('Bob Marley', 'bob@example.com')
+
+    # Listar todos os clientes
+    print("\nListando todos os clientes...")
+    clientes = gerenciador.listar_clientes()
+    for cliente in clientes:
+        print(cliente)
+
+    # Atualizar cliente
+    print("\nAtualizando cliente...")
+    gerenciador.alterar_cliente(1, 'Alice Albuquerque', 'alice@example.com')
+    print(gerenciador.exibir_cliente(1))
+
+    # Pesquisar cliente por nome
+    print("\nPesquisando cliente por nome 'Bob'...")
+    resultado = gerenciador.pesquisar_cliente_por_nome('Bob')
+    for cliente in resultado:
+        print(cliente)
+
+    # Exibir um cliente específico
+    print("\nExibindo cliente de ID 1...")
+    print(gerenciador.exibir_cliente(1))
+
+    # Remover um cliente
+    print("\nRemovendo cliente de ID 2...")
+    gerenciador.remover_cliente(2)
+    print("Listando todos os clientes após remoção...")
+    clientes = gerenciador.listar_clientes()
+    for cliente in clientes:
+        print(cliente)
+
+if __name__ == "__main__":
+    main()
