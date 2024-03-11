@@ -54,6 +54,38 @@ class GerenciadorDeClientes(GerenciadorDeBanco):
         cursor.execute('DELETE FROM clientes WHERE id = ?', (id,))
         self.conn.commit()
 
+class GerenciadorDeProdutos(GerenciadorDeBanco):
+    def inserir_produto(self, nome, quantidade, preco):
+        cursor = self.conn.cursor()
+        cursor.execute('INSERT INTO produtos (nome, quantidade, preco) VALUES (?, ?, ?)', (nome, quantidade, preco))
+        self.conn.commit()
+
+    def listar_produtos(self):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM produtos')
+        return cursor.fetchall()
+
+    def alterar_produto(self, id, nome, quantidade, preco):
+        cursor = self.conn.cursor()
+        cursor.execute('UPDATE produtos SET nome = ?, quantidade = ?, preco = ? WHERE id = ?', (nome, quantidade, preco, id))
+        self.conn.commit()
+
+    def pesquisar_produto_por_nome(self, nome):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM produtos WHERE nome LIKE ?', ('%'+nome+'%',))
+        return cursor.fetchall()
+
+    def exibir_produto(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT * FROM produtos WHERE id = ?', (id,))
+        return cursor.fetchone()
+
+    def remover_produto(self, id):
+        cursor = self.conn.cursor()
+        cursor.execute('DELETE FROM produtos WHERE id = ?', (id,))
+        self.conn.commit()
+
+
 def main():
     gerenciador = GerenciadorDeClientes()
 
